@@ -25,13 +25,18 @@ class _MyAppState extends State<MyApp> {
         .get(Uri.encodeFull(url), headers: {"content-type": "application/json", "token":"OWNlYzIwYmVhOWMzNDY2OGJjNDQzYjY3YTNlOTllMjN8MjAxOS0wNC0wMyAxMjowMA=="});
     var resBody = json.decode(res.body);
 
-    setState(() {
+    if(resBody['success'] == true){
+setState(() {
       data = resBody['payload'];
     });
 
     print(resBody);
 
     return "Sucess";
+    }else{
+      return "Failed";
+    }
+    
   }
 
   @override
