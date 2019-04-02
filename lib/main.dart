@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 void main() => runApp(MaterialApp(
       title: "Hospital Management",
@@ -21,22 +22,23 @@ class _MyAppState extends State<MyApp> {
   List data = List(); //edited line
 
   Future<String> getSWData() async {
+    var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
+    var time = new DateFormat.jm().format(new DateTime.now().toUtc());
     var res = await http
-        .get(Uri.encodeFull(url), headers: {"content-type": "application/json", "token":"OWNlYzIwYmVhOWMzNDY2OGJjNDQzYjY3YTNlOTllMjN8MjAxOS0wNC0wMyAxMjowMA=="});
+        .get(Uri.encodeFull(url), headers: {"content-type": "application/json", "token": base64.encode(utf8.encode("9cec20bea9c34668bc443b67a3e99e23|" + date + " " + time))});
     var resBody = json.decode(res.body);
 
     if(resBody['success'] == true){
-setState(() {
-      data = resBody['payload'];
-    });
+      setState(() {
+        data = resBody['payload'];
+      });
 
-    print(resBody);
+      print(resBody);
 
-    return "Sucess";
+      return "Sucess";
     }else{
       return "Failed";
     }
-    
   }
 
   @override
