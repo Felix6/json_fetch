@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
     var resBody = json.decode(res.body);
 
     setState(() {
-      data = resBody;
+      data = resBody['payload'];
     });
 
     print(resBody);
