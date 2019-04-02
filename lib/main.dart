@@ -25,7 +25,7 @@ class _MyAppState extends State<MyApp> {
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
     var res = await http
-        .get(Uri.encodeFull(url), headers: {"content-type": "application/json", "token": base64.encode(utf8.encode("9cec20bea9c34668bc443b67a3e99e23|" + date + " " + time))});
+        .post(Uri.encodeFull(url), headers: {"content-type": "application/json", "token": base64.encode(utf8.encode("9cec20bea9c34668bc443b67a3e99e23|" + date + " " + time))}, body: { "makeid": "1", "modelid": "1" });
     var resBody = json.decode(res.body);
 
     if(resBody['success'] == true){
