@@ -15,25 +15,79 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _mySelection;
+  String _makesSelection;
+  String _partsSelection;
+  String _modelSelection;
 
-  final String url = "https://admin.junkerbernird.com/api/vehicles/getmakes";
 
-  List data = List(); //edited line
+  // these are GET requests  
+  final String makesUrl = "https://admin.junkerbernird.com/api/vehicles/getmakes";
+  final String partsUrl = "https://admin.junkerbernird.com/api/vehicles/getparts";
 
-  Future<String> getSWData() async {
+
+  // these are POST request
+  final String modelsUrl = "https://admin.junkerbernird.com/api/vehicles/getmodels/";
+  final String listUrl   = "https://admin.junkerbernird.com/api/vehicles/lists";
+
+  List makesDataList = List(); 
+  List partDataList = List();
+  List modelDataList = List();
+
+  Future<String> getModelData() async{
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
-    var res = await http
-        .post(Uri.encodeFull(url), headers: {"content-type": "application/json", "token": base64.encode(utf8.encode("9cec20bea9c34668bc443b67a3e99e23|" + date + " " + time))}, body: { "makeid": "1", "modelid": "1" });
-    var resBody = json.decode(res.body);
+    var modelRes = await http
+        .post(Uri.encodeFull(modelsUrl), headers: {"content-type": "application/json", "Content-lenght":"100", "token": base64.encode(utf8.encode("9cec20bea9c34668bc443b67a3e99e23|" + date + " " + time))}, body: { "makeid": "1", "modelid": "1" });
+    var modelResBody = json.decode(modelRes.body);
 
-    if(resBody['success'] == true){
+      if(modelResBody['success'] == true){
+        setState(() {
+          modelDataList = modelResBody['payload'];
+        });
+
+        print(modelResBody);
+        return "Sucess";
+      }else{
+        print("Fail boi");
+        return "Failed";
+      }
+  }
+
+  Future<String> getMakeData() async {
+    var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
+    var time = new DateFormat.jm().format(new DateTime.now().toUtc());
+    var makeRes = await http
+        .get(Uri.encodeFull(makesUrl), headers: {"content-type": "application/json", "token": base64.encode(utf8.encode("9cec20bea9c34668bc443b67a3e99e23|" + date + " " + time))}); //, body: { "makeid": "1", "modelid": "1" });
+    var makeResBody = json.decode(makeRes.body);
+
+    if(makeResBody['success'] == true){
       setState(() {
-        data = resBody['payload'];
+        makesDataList = makeResBody['payload'];
       });
 
-      print(resBody);
+      print(makeResBody);
+
+      return "Sucess";
+    }else{
+      return "Failed";
+    }
+  }
+
+  Future<String> getPartsData() async {
+    var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
+    var time = new DateFormat.jm().format(new DateTime.now().toUtc());
+
+     var partsRes = await http
+        .get(Uri.encodeFull(partsUrl), headers: {"content-type": "application/json", "token": base64.encode(utf8.encode("9cec20bea9c34668bc443b67a3e99e23|" + date + " " + time))}); //, body: { "makeid": "1", "modelid": "1" });
+    var partsResBody = json.decode(partsRes.body);
+
+    if(partsResBody['success'] == true){
+      setState(() {
+        partDataList = partsResBody['payload'];
+      });
+
+      print(partsResBody);
+      
 
       return "Sucess";
     }else{
@@ -44,18 +98,33 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    this.getSWData();
+    this.getMakeData();
+    this.getPartsData();
+    this.getModelData();
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("Hospital Management"),
+        title: Text("Junker Bernird"),
+        backgroundColor: new Color.fromRGBO(172, 44, 58, 1),
       ),
+
       body: new Center(
-        child: new DropdownButton(
-          items: data.map((item) {
+        child: Column(
+      
+        children: <Widget>[
+          
+          Text("Marca",
+          style: TextStyle(
+            fontSize: 25.0,
+            fontWeight: FontWeight.bold,
+            ),
+          ),
+          DropdownButton(
+          hint: Text("Seleccione una marca"),
+          items: makesDataList.map((item) {
             return new DropdownMenuItem(
               child: new Text(item['value']),
               value: item['id'].toString(),
@@ -63,11 +132,59 @@ class _MyAppState extends State<MyApp> {
           }).toList(),
           onChanged: (newVal) {
             setState(() {
-              _mySelection = newVal;
+              _makesSelection = newVal;
             });
           },
-          value: _mySelection,
+          value: _makesSelection,
         ),
+
+        Text("Pieza",
+         style: TextStyle(
+            fontSize: 25.0,
+            fontWeight: FontWeight.bold,
+            ),
+          ),
+        DropdownButton(
+          
+          hint: Text("Seleccione una pieza"),
+
+          items: partDataList.map((item){
+            return DropdownMenuItem(
+              child: Text(item['value']),
+              value: item['id'].toString(),
+            );
+          }).toList(),
+          onChanged: (newVal) {
+            setState(() {
+              _partsSelection = newVal;
+            });
+          },
+          value: _partsSelection,
+        ),
+
+        Text("Modelo",
+         style: TextStyle(
+            fontSize: 25.0,
+            fontWeight: FontWeight.bold,
+            ),
+          ),
+          DropdownButton(
+            hint: Text("Seleccione un Modelo"),
+            items: modelDataList.map((item) {
+              return DropdownMenuItem(
+                child: Text(item['value']),
+                value: item['id'].toString(),
+              );
+            }).toList(),
+            onChanged: (newVal) {
+              setState(() {
+                _modelSelection = newVal;
+              });
+            },
+             value: _modelSelection,
+          ),
+        ],
+      ),
       ),
     );
   }
