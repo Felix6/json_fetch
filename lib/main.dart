@@ -34,13 +34,13 @@ class _MyAppState extends State<MyApp> {
   List modelDataList = List();
 
   Future<String> getModelData() async{
+    print("getModelData-----------------------------------------------");
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
     var makeId = "1";
     var modelRes = await http
-        .post(Uri.encodeFull(modelsUrl + makeId), 
-          headers: {"content-type": "application/json", "Content-lenght":"100", "token": base64.encode(utf8.encode("9cec20bea9c34668bc443b67a3e99e23|" + date + " " + time))}, 
-          body: { });
+        .post(Uri.encodeFull(modelsUrl + _makesSelection), 
+          headers: {"content-type": "application/json", "token": base64.encode(utf8.encode("9cec20bea9c34668bc443b67a3e99e23|" + date + " " + time))});
     var modelResBody = json.decode(modelRes.body);
 
       if(modelResBody['success'] == true){
@@ -57,6 +57,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<String> getMakeData() async {
+    print("getMakeData-----------------------------------------------");
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
     var makeRes = await http
@@ -103,7 +104,6 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     this.getMakeData();
     this.getPartsData();
-    this.getModelData();
   }
 
   @override
@@ -137,6 +137,7 @@ class _MyAppState extends State<MyApp> {
             setState(() {
               _makesSelection = newVal;
             });
+            this.getModelData();
           },
           value: _makesSelection,
         ),
@@ -152,8 +153,8 @@ class _MyAppState extends State<MyApp> {
           hint: Text("Seleccione una pieza"),
 
           items: partDataList.map((item){
-            return DropdownMenuItem(
-              child: Text(item['value']),
+            return new DropdownMenuItem(
+              child: new Text(item['value']),
               value: item['id'].toString(),
             );
           }).toList(),
@@ -174,8 +175,8 @@ class _MyAppState extends State<MyApp> {
           DropdownButton(
             hint: Text("Seleccione un Modelo"),
             items: modelDataList.map((item) {
-              return DropdownMenuItem(
-                child: Text(item['value']),
+              return new DropdownMenuItem(
+                child: new Text(item['value']),
                 value: item['id'].toString(),
               );
             }).toList(),
