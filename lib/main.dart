@@ -36,8 +36,11 @@ class _MyAppState extends State<MyApp> {
   Future<String> getModelData() async{
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
+    var makeId = "1";
     var modelRes = await http
-        .post(Uri.encodeFull(modelsUrl), headers: {"content-type": "application/json", "Content-lenght":"100", "token": base64.encode(utf8.encode("9cec20bea9c34668bc443b67a3e99e23|" + date + " " + time))}, body: { "makeid": "1", "modelid": "1" });
+        .post(Uri.encodeFull(modelsUrl + makeId), 
+          headers: {"content-type": "application/json", "Content-lenght":"100", "token": base64.encode(utf8.encode("9cec20bea9c34668bc443b67a3e99e23|" + date + " " + time))}, 
+          body: { });
     var modelResBody = json.decode(modelRes.body);
 
       if(modelResBody['success'] == true){
