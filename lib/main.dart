@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+
 class PartsSalePage extends StatefulWidget {
   @override
   _PartsSalePageState createState() => _PartsSalePageState();
@@ -17,14 +18,11 @@ class _PartsSalePageState extends State<PartsSalePage> {
   String _toYear;
 
   // These are GET requests
-  final String makesUrl =
-      "https://admin.junkerbernird.com/api/vehicles/getmakes";
-  final String partsUrl =
-      "https://admin.junkerbernird.com/api/vehicles/getparts";
+  final String makesUrl = "https://admin.junkerbernird.com/api/vehicles/getmakes";
+  final String partsUrl = "https://admin.junkerbernird.com/api/vehicles/getparts";
 
   // These are POST requests
-  final String modelsUrl =
-      "https://admin.junkerbernird.com/api/vehicles/getmodels/";
+  final String modelsUrl = "https://admin.junkerbernird.com/api/vehicles/getmodels/";
   final String listUrl = "https://admin.junkerbernird.com/api/vehicles/list/";
 
   List makesDataList = List();
@@ -32,12 +30,14 @@ class _PartsSalePageState extends State<PartsSalePage> {
   List modelDataList = List();
   List listResult = List();
 
-  Future<String> getPartsResult() async{
+  //, body: { "makeid": "1", "modelid": "1" });
+  // _makesSelection + _modelSelection + _fromYear + _toYear+ _partsSelection
+  Future<String> getPartsResult() async {
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
   //  var makeId = "1";
     var partListRes =
-    await http.post(Uri.encodeFull(listUrl + _makesSelection + _modelSelection + _fromYear + _toYear+ _partsSelection), headers: {
+    await http.post(Uri.encodeFull(listUrl), body: { "makeId":_makesSelection, "modelId":_modelSelection, "yearFrom":_fromYear, "yearTo":_toYear, "partId":_partsSelection}, headers: {
       "content-type": "application/json",
       "token": base64.encode(
           utf8.encode("9cec20bea9c34668bc443b67a3e99e23|" + date + " " + time))
