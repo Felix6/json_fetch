@@ -5,12 +5,17 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 
-class PartsSalePage extends StatefulWidget {
+void main() => runApp(MaterialApp(
+      title: "Test App",
+      home: MyApp(),
+    ));
+
+class MyApp extends StatefulWidget {
   @override
   _PartsSalePageState createState() => _PartsSalePageState();
 }
 
-class _PartsSalePageState extends State<PartsSalePage> {
+class _PartsSalePageState extends State<MyApp> {
   String _makesSelection;
   String _partsSelection;
   String _modelSelection;
@@ -153,13 +158,8 @@ class _PartsSalePageState extends State<PartsSalePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             /// HEADER IMAGE
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
-              child: Image.asset(
-                "images/bernirdlogo.png",
-                height: 100,
-              ),
-            ),
+          
+          
 
             /// MAKES DROPDOWN BUTTON
             Padding(
