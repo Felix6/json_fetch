@@ -28,7 +28,7 @@ class _PartsSalePageState extends State<MyApp> {
 
   // These are POST requests
   final String modelsUrl = "https://admin.junkerbernird.com/api/vehicles/getmodels/";
-  final String listUrl = "https://admin.junkerbernird.com/api/vehicles/list/";
+  final String listUrl = "https://6098c073.ngrok.io/admin.junkerbernird.com/api/vehicles/list/";
 
   List makesDataList = List();
   List partDataList = List();
@@ -41,12 +41,21 @@ class _PartsSalePageState extends State<MyApp> {
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
   //  var makeId = "1";
+  Map jsonData = { 
+    "makeId": _makesSelection,
+    "modelId": _modelSelection, 
+    "yearFrom": _fromYear, 
+    "yearTo":_toYear, 
+    "partId":_partsSelection 
+  };
+
     var partListRes =
-    await http.post(Uri.encodeFull(listUrl), headers: {
-      "content-type": "application/json",
+    await http.post(Uri.encodeFull(listUrl), 
+    headers: {
       "token": base64.encode(
           utf8.encode("9cec20bea9c34668bc443b67a3e99e23|" + date + " " + time))
-    }, body: { "makeId":_makesSelection, "modelId":_modelSelection, "yearFrom":_fromYear, "yearTo":_toYear, "partId":_partsSelection});
+    }, body: jsonData);
+    
     var partListResBody = json.decode(partListRes.body);
 
     if (partListResBody['success'] == true) {
