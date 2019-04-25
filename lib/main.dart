@@ -28,7 +28,8 @@ class _PartsSalePageState extends State<MyApp> {
 
   // These are POST requests
   final String modelsUrl = "https://admin.junkerbernird.com/api/vehicles/getmodels/";
-  final String listUrl = "https://6098c073.ngrok.io/admin.junkerbernird.com/api/vehicles/list/";
+  final String listUrl   = "https://admin.junkerbernird.com/api/vehicles/list/";
+  // 6098c073.ngrok.io
 
   List makesDataList = List();
   List partDataList = List();
@@ -38,6 +39,7 @@ class _PartsSalePageState extends State<MyApp> {
   //, body: { "makeid": "1", "modelid": "1" });
   // _makesSelection + _modelSelection + _fromYear + _toYear+ _partsSelection
   Future<String> getPartsResult() async {
+    print("get Part List----------------------------------------------");
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
   //  var makeId = "1";
@@ -245,7 +247,7 @@ class _PartsSalePageState extends State<MyApp> {
                   border: OutlineInputBorder(),
                 ),
                 onChanged: (newVal) {
-                  if(newVal.length == 1) {
+                  if(newVal.length > 1) {
                     _fromYear = newVal;
                   }
                 },
@@ -269,7 +271,7 @@ class _PartsSalePageState extends State<MyApp> {
                     border: OutlineInputBorder()
                 ),
                 onChanged: (newVal) {
-                  if(newVal.length == 1) {
+                  if(newVal.length > 1) {
                     _toYear = newVal;
                   }
                 },
