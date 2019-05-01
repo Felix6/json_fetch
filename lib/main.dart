@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 
+
 void main() => runApp(MaterialApp(
       title: "Test App",
       home: MyApp(),
@@ -15,12 +16,20 @@ class MyApp extends StatefulWidget {
   _PartsSalePageState createState() => _PartsSalePageState();
 }
 
+
+
 class _PartsSalePageState extends State<MyApp> {
   String _makesSelection;
   String _partsSelection;
   String _modelSelection;
   String _fromYear;
   String _toYear;
+
+
+  List makesDataList = List();
+  List genericPartsDataList = List();
+  List modelDataList = List();
+  List partSeachResultList = List();
 
   // These are GET requests
   final String makesUrl = "https://admin.junkerbernird.com/api/vehicles/getmakes";
@@ -31,15 +40,8 @@ class _PartsSalePageState extends State<MyApp> {
   final String listUrl   = "https://admin.junkerbernird.com/api/vehicles/list/";
   // 6098c073.ngrok.io
 
-  List makesDataList = List();
-  List partDataList = List();
-  List modelDataList = List();
-  List listResult = List();
 
-  //, body: { "makeid": "1", "modelid": "1" });
-  // _makesSelection + _modelSelection + _fromYear + _toYear+ _partsSelection
   Future<String> getPartsResult() async {
-    print("get Part List----------------------------------------------");
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
   //  var makeId = "1";
@@ -62,19 +64,19 @@ class _PartsSalePageState extends State<MyApp> {
 
     if (partListResBody['success'] == true) {
       setState(() {
-        listResult = partListResBody['payload'];
+        partSeachResultList = partListResBody['payload'];
       });
-      print(partListResBody);
+      print(partSeachResultList);
       return "Success";
     } else {
-      print("Failed");
       return "Failed";
     }
 
   }
 
+  
+  // This makes a post request, taking the data from the _makesSelection variable
   Future<String> getModelData() async {
-    print("getModelData-----------------------------------------------");
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
    // var makeId = "1";
@@ -91,7 +93,7 @@ class _PartsSalePageState extends State<MyApp> {
         modelDataList = modelResBody['payload'];
       });
 
-      print(modelResBody);
+      print("Model Data Success");
       return "Sucess";
     } else {
       print("Failed");
@@ -99,8 +101,9 @@ class _PartsSalePageState extends State<MyApp> {
     }
   }
 
+  // This gets the makes of all the cars
+  // i.e Toyota, Nissan, Mercedes-benz
   Future<String> getMakeData() async {
-    print("getMakeData-----------------------------------------------");
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
     var makeRes = await http.get(Uri.encodeFull(makesUrl), headers: {
@@ -115,7 +118,7 @@ class _PartsSalePageState extends State<MyApp> {
         makesDataList = makeResBody['payload'];
       });
 
-      print(makeResBody);
+      print("Makes Data Success");
 
       return "Sucess";
     } else {
@@ -123,6 +126,9 @@ class _PartsSalePageState extends State<MyApp> {
     }
   }
 
+
+  // This gets the generic list of parts that COULD be available for all the cars
+  // i.e: Motor, rims, rear bumper etc
   Future<String> getPartsData() async {
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
@@ -136,10 +142,10 @@ class _PartsSalePageState extends State<MyApp> {
 
     if (partsResBody['success'] == true) {
       setState(() {
-        partDataList = partsResBody['payload'];
+        genericPartsDataList = partsResBody['payload'];
       });
 
-      print(partsResBody);
+      print(genericPartsDataList);
 
       return "Sucess";
     } else {
@@ -291,7 +297,7 @@ class _PartsSalePageState extends State<MyApp> {
                       fontSize: 20.0, color: Color.fromRGBO(172, 44, 58, 1)),
                   border: OutlineInputBorder(),
                 ),
-                items: partDataList.map((item) {
+                items: genericPartsDataList.map((item) {
                   return new DropdownMenuItem(
                     child: new Text(item['value']),
                     value: item['id'].toString(),
@@ -301,8 +307,38 @@ class _PartsSalePageState extends State<MyApp> {
                   setState(() {
                     _partsSelection = newVal;
                   });
+                    this.getPartsResult();
+
                 },
                 value: _partsSelection,
+              ),
+            ),
+
+            // TESTING PARSING THE DATA
+             Padding(
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+              child: DropdownButtonFormField(
+                decoration: InputDecoration(
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.grey[250],
+                  labelText: "",
+                  labelStyle: TextStyle(
+                      fontSize: 20.0, color: Color.fromRGBO(172, 44, 58, 1)),
+                  border: OutlineInputBorder(),
+                ),
+                items: partSeachResultList.map((item) {
+                  return new DropdownMenuItem(
+                    child: new Text(item['stockNum']),
+                    value: item['year'].toString(),
+                  );
+                }).toList(),
+                // onChanged: (newVal) {
+                //   setState(() {
+                //     _partsSelection = newVal;
+                //   });
+                // },
+               // value: _partsSelection,
               ),
             ),
 
@@ -326,10 +362,11 @@ class _PartsSalePageState extends State<MyApp> {
                       ),
                     ),
                     onPressed: () {
-                     this.getPartsResult();
+                      
 
-                     // Navigator.of(context).push(MaterialPageRoute(
-                       //   builder: (BuildContext context) => AboutPage()));
+                      //Navigator.of(context).push(MaterialPageRoute(
+                      //builder: (BuildContext context) => CarResultPage(stockNumber: ,year: ,)));
+                  
                     },
                   ),
                 ),
@@ -338,6 +375,28 @@ class _PartsSalePageState extends State<MyApp> {
           ],
         ),
       ),
+    );
+  }
+}
+class CarResultPage extends StatefulWidget {
+  final String stockNumber;
+  final String year;
+
+  CarResultPage({Key key, this.stockNumber, this.year}) : super (key : key);
+  
+  @override
+  _CarResultPageState createState() => _CarResultPageState();
+}
+
+class _CarResultPageState extends State<CarResultPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Resultados"),
+        backgroundColor: Color.fromRGBO(172, 44, 58, 1),
+      ),
+      
     );
   }
 }
