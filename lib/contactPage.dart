@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class ContactWebView extends StatelessWidget {
@@ -12,7 +13,6 @@ class ContactWebView extends StatelessWidget {
       ),
       body: SafeArea(
         child: WebviewScaffold(
-          //
           url: "https://www.bmstudiopr.com/junker_bernird/feeds.php",
           initialChild: Center(
             child: CircularProgressIndicator(backgroundColor: Colors.blue,),
@@ -22,3 +22,5 @@ class ContactWebView extends StatelessWidget {
     );
   }
 }
+
+

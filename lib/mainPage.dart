@@ -128,11 +128,6 @@ class MainPageState extends State<MainPage> {
                     'images/bernirdlogo.png',
                     height: 115.0,
                   ),
-                  // Text('Super Junker Bernird',
-                  // style: TextStyle(
-                  //   color: Colors.black,
-                  //   fontWeight: FontWeight.bold
-                  // ),),
                   elevation: 10.0,
                 ),
               ],
@@ -158,28 +153,6 @@ class MainPageState extends State<MainPage> {
               },
             ),
           ),
-          Card(
-            child: new ListTile(
-              leading: new Icon(
-                Icons.directions_car,
-                size: 35.0,
-                color: Colors.amber,
-              ),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => PartsSalePage()));
-
-                //_launchBUY();
-              },
-              title: Text(
-                "Comprar Piezas",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ),
 
           Card(
             child: new ListTile(
@@ -189,12 +162,6 @@ class MainPageState extends State<MainPage> {
                 color: Colors.green,
               ),
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (BuildContext context) => CarSalePage(),
-                //   ),
-                // );
                 Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (BuildContext context) => (CarSaleSplash())));
@@ -216,9 +183,7 @@ class MainPageState extends State<MainPage> {
                 style: TextStyle(fontSize: 20),
               ),
               onTap: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => MapsPage()));
+                _launchMap();
               },
             ),
           ),
@@ -239,20 +204,6 @@ class MainPageState extends State<MainPage> {
             ),
           ),
 
-          // Card(
-          //   child: ListTile(
-          //     leading: Icon(CustomIcons.facebook_official, size: 35.0, color: Color.fromRGBO(59, 89, 152, 1),),
-          //     onTap: () {
-          //       Navigator.of(context).pop();
-          //       Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => FacebookWebView()));
-          //     },
-          //     title: Text("Visita nuestra pagina",
-          //       style: TextStyle(
-          //         fontSize: 20,
-          //       ),
-          //     ),
-          //   ),
-          // ),
           Card(
             child: ListTile(
               leading: Icon(
@@ -306,6 +257,15 @@ class MainPageState extends State<MainPage> {
     }
   }
 
+  _launchMap() async {
+    const mapUrl = "https://goo.gl/maps/obHa61Xim8KyjEU18";
+    if (await canLaunch(mapUrl)){
+      await launch(mapUrl);
+    } else {
+      throw "Could not Call $mapUrl";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -329,8 +289,8 @@ class MainPageState extends State<MainPage> {
               autoPlay: true,
               items: <Widget>[
                 Image.asset("images/headernegocio.jpeg"),
-                Image.asset("images/headerempleados.jpeg"),
-                Image.asset("images/headerllamanos.jpeg")
+                Image.asset("images/headerempleados.png"),
+                Image.asset("images/junkerheader.png")
                 ],
               ),
             ),
@@ -490,7 +450,7 @@ class MainPageState extends State<MainPage> {
                     ),
                     onPressed: () {
                     // this.getPartsResult();
-
+                    
                      Navigator.of(context).push(MaterialPageRoute(
                        builder: (BuildContext context) => ResultsRoute(
                          _makesSelection,

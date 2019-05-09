@@ -21,7 +21,7 @@ class AboutPage extends StatelessWidget {
                           fontSize: 16.0,
                         ),
                       ),
-                      Image.asset("images/empleados.jpeg"),
+                     
               ],
             ),
               

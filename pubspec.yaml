@@ -71,9 +71,11 @@ flutter:
   #  - images/testheader3.jpeg
     - images/handmoneykey.png
     - images/empleados.jpeg
-    - images/headerempleados.jpeg
+    - images/headerempleados.png
     - images/headerllamanos.jpeg
     - images/headernegocio.jpeg
+    - images/junkerheader.png
+    - images/oops.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

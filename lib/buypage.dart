@@ -3,37 +3,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:material_drawer/Networking.dart';
 import 'package:material_drawer/Results.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:material_drawer/payPalWebView.dart';
 
 class CarPayload {
   bool success = true;
   String errorMessage = "";
-  List<Parts> carDetails =  List();
-  List<Parts> carParsts = List();
+  PayloadBuyPage carDetails;
+//  List<Parts> carParsts = List();
 
+  CarPayload({this.success, this.errorMessage, this.carDetails});
 
-  CarPayload({this.success, this.errorMessage, this.carDetails, this.carParsts});
-
-  factory CarPayload.fromJson(Map<String, dynamic> json){
-    // Contains details about the car
-    var detailslist = json["payload"] as List;
-    print(detailslist);
-    // Contains available parts for the car
-    var partslist = json["payload"]["parts"] as List;
-    
-    
-    List<Parts> detailsRes = detailslist.map((i) => Parts.fromJson(i)).toList();
-    List<Parts> partsRes = partslist.map((i) => Parts.fromJson(i)).toList();
-   
+  factory CarPayload.fromJson(Map<String, dynamic> json) {
     return new CarPayload(
-      success: json["success"],
-      errorMessage: json["errorMessage"].toString(),
-      carDetails: detailsRes,
-      carParsts: partsRes,
-    );
+        success: json["success"],
+        errorMessage: json["errorMessage"].toString(),
+        carDetails: PayloadBuyPage.fromJson(json["payload"]));
   }
 }
 
-class Parts {
+class PayloadBuyPage {
   String year;
   String stockNum;
   String vin;
@@ -43,35 +31,60 @@ class Parts {
   String engine;
   String transmission;
   String color;
-  List<String> parts;
-  
-  
-  Parts({this.year,this.stockNum,this.vin,this.make,this.model,this.trim,this.engine,this.transmission,this.color,this.parts});
+  List<Parts> parts;
 
-  factory Parts.fromJson(Map<String, dynamic> json){
-    var partsFromJson = json["parts"];
-    List<String> parts = List<String>.from(partsFromJson);
-    return Parts(
-      
-      
-      year: json["year"].toString(),
-      stockNum: json["stockNum"].toString(),
-      vin: json["vin"].toString(),
-      make: json["make"].toString(),
-      model: json["model"].toString(),
-      trim: json["trim"].toString(),
-      engine: json["engine"].toString(),
-      transmission: json["transmission"].toString(),
-      color: json["color"].toString(),
-      parts: parts
+  PayloadBuyPage(
+      {this.year,
+      this.stockNum,
+      this.vin,
+      this.make,
+      this.model,
+      this.trim,
+      this.engine,
+      this.transmission,
+      this.color,
+      this.parts});
 
-    );
+  factory PayloadBuyPage.fromJson(Map<String, dynamic> json) {
+//    var list = json['mid'] as List;
+//    List<ExamsItems> midExam = list.map((i) => ExamsItems.fromJson(i)).toList();
+    var partsFromJson = json["parts"] as List;
+    List<Parts> parts = partsFromJson.map((i) => Parts.fromJson(i)).toList();
+    return PayloadBuyPage(
+        year: json["year"].toString(),
+        stockNum: json["stockNum"].toString(),
+        vin: json["vin"].toString(),
+        make: json["make"].toString(),
+        model: json["model"].toString(),
+        trim: json["trim"].toString(),
+        engine: json["engine"].toString(),
+        transmission: json["transmission"].toString(),
+        color: json["color"].toString(),
+        parts: parts);
   }
 }
 
+class Parts {
+  String partNum;
+  String name;
+  String price;
+  String payPalUrl;
 
+  Parts({this.partNum, this.name, this.price, this.payPalUrl});
 
+  factory Parts.fromJson(Map<String, dynamic> json) {
+    return new Parts(
+        partNum: json["partNum"],
+        name: json["name"],
+        price: json["price"].toString(),
+        payPalUrl: json["payPalUrl"]);
+  }
 
+  @override
+  String toString() {
+    return "partNum: $partNum, name: $name, price: $price, payPalUrl: $payPalUrl";
+  }
+}
 
 class BuyPartsRoute extends StatefulWidget {
   final Payload item;
@@ -88,74 +101,115 @@ class _BuyPartsRouteState extends State<BuyPartsRoute> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Comprar Pieza"),
-        backgroundColor: Color.fromRGBO(172, 44, 58, 1),        
+        backgroundColor: Color.fromRGBO(172, 44, 58, 1),
       ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
               child: CarouselSlider(
-                height: 200.0,
-                enableInfiniteScroll: true,
-                autoPlay: true,
-                autoPlayInterval: Duration(seconds: 2),
-                
-                items:<Widget>[
-                  Image.network("https://junkerbernird.blob.core.windows.net/vehiclephotos/" + widget.item.stockNum.toString() + "_FOTO1.jpg"),
-                  Image.network("https://junkerbernird.blob.core.windows.net/vehiclephotos/" + widget.item.stockNum.toString() + "_FOTO2.jpg"),
-                  Image.network("https://junkerbernird.blob.core.windows.net/vehiclephotos/" + widget.item.stockNum.toString() + "_FOTO3.jpg"),
-                  Image.network("https://junkerbernird.blob.core.windows.net/vehiclephotos/" + widget.item.stockNum.toString() + "_FOTO4.jpg"),
-                  Image.network("https://junkerbernird.blob.core.windows.net/vehiclephotos/" + widget.item.stockNum.toString() + "_FOTO5.jpg"),
-                  Image.network("https://junkerbernird.blob.core.windows.net/vehiclephotos/" + widget.item.stockNum.toString() + "_FOTO6.jpg"),
-                  
-                ]
-              ),
+                  height: 200.0,
+                  enableInfiniteScroll: true,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 2),
+                  items: <Widget>[
+                    Image.network(
+                        "https://junkerbernird.blob.core.windows.net/vehiclephotos/" +
+                            widget.item.stockNum.toString() +
+                            "_FOTO1.jpg"),
+                    Image.network(
+                        "https://junkerbernird.blob.core.windows.net/vehiclephotos/" +
+                            widget.item.stockNum.toString() +
+                            "_FOTO2.jpg"),
+                    Image.network(
+                        "https://junkerbernird.blob.core.windows.net/vehiclephotos/" +
+                            widget.item.stockNum.toString() +
+                            "_FOTO3.jpg"),
+                    Image.network(
+                        "https://junkerbernird.blob.core.windows.net/vehiclephotos/" +
+                            widget.item.stockNum.toString() +
+                            "_FOTO4.jpg"),
+                    Image.network(
+                        "https://junkerbernird.blob.core.windows.net/vehiclephotos/" +
+                            widget.item.stockNum.toString() +
+                            "_FOTO5.jpg"),
+                    Image.network(
+                        "https://junkerbernird.blob.core.windows.net/vehiclephotos/" +
+                            widget.item.stockNum.toString() +
+                            "_FOTO6.jpg"),
+                  ]),
             ),
-            Divider(),
-            FutureBuilder<CarPayload>(
-              future: Networking().getDetails(
-                widget.item.stockNum),
-              builder: (context, snapshot) {
-                if (snapshot.hasData){
-                  details = snapshot.data;
 
-                  return ListView.separated(
-                    itemBuilder: (context, position) {
-                      final item = details.carDetails[position];
-                      return ListTile(
-                        title: Text(item.parts[position].toString()),
-                        trailing: RaisedButton(
-                          onPressed: () {
+            SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  FutureBuilder<CarPayload>(
+                      future: Networking().getDetails(widget.item.stockNum),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          details = snapshot.data;
 
-                          },
-                        ),
-                        
-                      );
-                    },
-                    separatorBuilder: (context, position) => Divider(),
-                    itemCount: snapshot.data.carDetails.length);
-                } else if(snapshot.hasError){
-                  return Text(snapshot.error.toString());
-                }
+                          return ListView.separated(
+                              shrinkWrap: true,
+                              physics: ClampingScrollPhysics(),
+                              itemBuilder: (context, position) {
+                                final item = details.carDetails.parts[position];
+                                return ListTile(
+                                  title: Text(item.name.toString(),
+                                    style: TextStyle(
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                  subtitle: Text("\$" + item.price.toString(),
+                                    style: TextStyle(
+                                      fontSize: 15.0,
+                                      color: Colors.green
+                                    ),
+                                  ),
+                                  trailing: RaisedButton(
+                                    child: Text(
+                                      "Comprar",
+                                      style: TextStyle(
+                                        color: Colors.white
 
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                       mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[CircularProgressIndicator()],
-                    ),
-                  ),
-                );
-              }
+                                        ),
+                                    ),
+                                    color: Color.fromRGBO(172, 44, 58, 1),
+                                    onPressed: () {
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (BuildContext context) => PayPalWebView(
+                                         item.payPalUrl
+                                        )
+                                      ));
 
+
+                                    },
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, position) =>
+                                  Divider(),
+                              itemCount: snapshot.data.carDetails.parts.length);
+                        } else if (snapshot.hasError) {
+                          return Text(snapshot.error.toString());
+                        }
+
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[CircularProgressIndicator()],
+                            ),
+                          ),
+                        );
+                      }),
+                ],
+              ),
             )
-            
-
           ],
         ),
       ),
@@ -166,7 +220,6 @@ class _BuyPartsRouteState extends State<BuyPartsRoute> {
       //     )
       //   ],
       // ),
-
     );
   }
 }

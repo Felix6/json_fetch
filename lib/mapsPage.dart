@@ -1,28 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
-class MapsPage extends StatelessWidget {
+class MapsWebView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text("Como llegar"),
+        title: Text("Junker Bernird"),
         backgroundColor: Color.fromRGBO(172, 44, 58, 1),
       ),
-      body:Container(
-         decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end:Alignment.bottomCenter,
-                colors: [
-                  Colors.grey[800],
-                  Colors.grey[700],
-                  Colors.grey[600],
-                  Colors.grey[500],
-                ]
-              )
-            ),
-      )
+      body: SafeArea(
+        child: WebviewScaffold(
+          url: "https://goo.gl/maps/obHa61Xim8KyjEU18",
+          initialChild: Center(
+            child: CircularProgressIndicator(backgroundColor: Colors.blue,),
+          ),
+        ),
+      ),
     );
   }
 }

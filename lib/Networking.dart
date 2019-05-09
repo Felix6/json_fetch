@@ -21,7 +21,7 @@ class Networking {
    
     if (detailsRes.statusCode == 200) {
       var data = jsonDecode(detailsRes.body);
-      print(data);
+   //   print(data);
       return CarPayload.fromJson(data);
     } else {
       throw Exception('Failed to load details');
@@ -32,7 +32,7 @@ class Networking {
 
   Future<Results> getPartsResult(String _makesSelection, String _modelSelection, 
     int _fromYear, int _toYear, String _partsSelection) async {
-    print("get Part List----------------------------------------------");
+   // print("get Part List----------------------------------------------");
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
     //  var makeId = "1";
