@@ -150,7 +150,6 @@ class _BuyPartsRouteState extends State<BuyPartsRoute> {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           details = snapshot.data;
-
                           return ListView.separated(
                               shrinkWrap: true,
                               physics: ClampingScrollPhysics(),
@@ -183,8 +182,6 @@ class _BuyPartsRouteState extends State<BuyPartsRoute> {
                                          item.payPalUrl
                                         )
                                       ));
-
-
                                     },
                                   ),
                                 );
@@ -195,7 +192,10 @@ class _BuyPartsRouteState extends State<BuyPartsRoute> {
                         } else if (snapshot.hasError) {
                           return Text(snapshot.error.toString());
                         }
+                        // TODO: check if list is empty to the show different UI
 
+
+                        // While the Future is busy loading data, this is rendered
                         return Center(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -209,7 +209,7 @@ class _BuyPartsRouteState extends State<BuyPartsRoute> {
                       }),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

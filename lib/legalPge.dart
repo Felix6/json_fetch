@@ -60,7 +60,7 @@ La suscripción a boletines de correos electrónicos publicitarios es voluntaria
 Super Junker Bernird reserva los derechos de cambiar o de modificar estos términos sin previo aviso.
 ''')
               ],
-              title: Text("Terminos y condiciones de uso:",
+              title: Text("Términos y Condiciones",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
@@ -114,7 +114,7 @@ Super Junker Bernird, podrá aceptar la devolución de algún producto siempre y
 
 '''),
               ],
-              title: Text("Politica de devolucion:",
+              title: Text("Política de Devolución",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
@@ -157,7 +157,7 @@ Esta compañía no venderá, cederá ni distribuirá la información personal qu
 Super Junker Bernird Se reserva el derecho de cambiar los términos de la presente Política de Privacidad en cualquier momento.
 '''),
               ],
-              title: Text("Politica de privacidad:",
+              title: Text("Política de Privacidad",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,

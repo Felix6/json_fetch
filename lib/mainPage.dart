@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'about.dart';
-import 'mapsPage.dart';
 import 'carSaleSplash.dart';
 import 'contactPage.dart';
-import 'partsSalePage.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -132,7 +130,8 @@ class MainPageState extends State<MainPage> {
                 ),
               ],
             ),
-          )),
+          )
+        ),
 
           Card(
             child: new ListTile(
@@ -141,7 +140,7 @@ class MainPageState extends State<MainPage> {
                 size: 35.0,
               ),
               title: Text(
-                'Quienes Somos',
+                "¿Quiénes Somos?",
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -167,7 +166,7 @@ class MainPageState extends State<MainPage> {
                     builder: (BuildContext context) => (CarSaleSplash())));
               },
               title: Text(
-                "Vendenos tu auto",
+                "Véndenos tu Auto",
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -179,7 +178,7 @@ class MainPageState extends State<MainPage> {
             child: new ListTile(
               leading: new Icon(Icons.room, size: 35.0, color: Colors.red),
               title: Text(
-                'Como llegar',
+                "Nuestra Ubicación",
                 style: TextStyle(fontSize: 20),
               ),
               onTap: () {
@@ -196,7 +195,7 @@ class MainPageState extends State<MainPage> {
                 _launchCALL();
               },
               title: Text(
-                "Llamanos",
+                "Llámanos",
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -217,7 +216,7 @@ class MainPageState extends State<MainPage> {
                     builder: (BuildContext context) => ContactWebView()));
               },
               title: Text(
-                "Escribenos",
+                "Escríbenos",
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -229,7 +228,7 @@ class MainPageState extends State<MainPage> {
             child: new ListTile(
               leading: new Icon(Icons.filter, size: 35.0, color: Colors.red),
               title: Text(
-                'Legal',
+                "Aviso Legal",
                 style: TextStyle(fontSize: 20),
               ),
               onTap: () {
@@ -239,8 +238,6 @@ class MainPageState extends State<MainPage> {
               },
             ),
           ),
-          // Image.asset("images/drawerfooter.jpg",
-          //   height: 160.0)
         ],
       ),
     );
@@ -256,7 +253,7 @@ class MainPageState extends State<MainPage> {
       throw "Could not Call $url";
     }
   }
-
+  
   _launchMap() async {
     const mapUrl = "https://goo.gl/maps/obHa61Xim8KyjEU18";
     if (await canLaunch(mapUrl)){
@@ -281,6 +278,7 @@ class MainPageState extends State<MainPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
+       
         children: <Widget>[
         Container(
           child: CarouselSlider(
@@ -288,13 +286,13 @@ class MainPageState extends State<MainPage> {
               enableInfiniteScroll: true,
               autoPlay: true,
               items: <Widget>[
-                Image.asset("images/headernegocio.jpeg"),
-                Image.asset("images/headerempleados.png"),
-                Image.asset("images/junkerheader.png")
+                Image.network("http://www.bmstudiopr.com/jbapp/promo/promo1.png"),
+                Image.network("http://www.bmstudiopr.com/jbapp/promo/promo2.png"),
+                Image.network("http://www.bmstudiopr.com/jbapp/promo/promo3.png")
                 ],
               ),
             ),
-            
+
             /// MAKES DROPDOWN BUTTON
             Padding(
               padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
@@ -400,7 +398,7 @@ class MainPageState extends State<MainPage> {
                 },
               ),
             ),
-
+            
             /// PARTS DROPDOWN BUTTON
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
@@ -428,7 +426,7 @@ class MainPageState extends State<MainPage> {
                 value: _partsSelection,
               ),
             ),
-
+            
             /// BUTTON
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -449,8 +447,6 @@ class MainPageState extends State<MainPage> {
                       ),
                     ),
                     onPressed: () {
-                    // this.getPartsResult();
-                    
                      Navigator.of(context).push(MaterialPageRoute(
                        builder: (BuildContext context) => ResultsRoute(
                          _makesSelection,

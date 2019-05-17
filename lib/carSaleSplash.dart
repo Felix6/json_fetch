@@ -27,7 +27,7 @@ class CarSaleSplash extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.directions_car, size: 50.0, color: Colors.black,),
-            title: Text("Envianos fotos e informacion basica de tu vehiculo.",
+            title: Text("Envianos fotos e información basica de tu vehículos.",
               style: TextStyle(
                 fontSize: 19.0,
                 fontWeight: FontWeight.bold,
