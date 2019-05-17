@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
 FLUTTER_ROOT=/home/felix/Code/Flutter/flutter
-FLUTTER_APPLICATION_PATH=/home/felix/Code/Flutter/material_drawer
+FLUTTER_APPLICATION_PATH=/home/felix/github/json_fetch
 FLUTTER_TARGET=lib/main.dart
 FLUTTER_BUILD_DIR=build
 SYMROOT=${SOURCE_ROOT}/../build/ios
