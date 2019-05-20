@@ -12,6 +12,7 @@ class AboutPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             // Padding(
             //   padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
