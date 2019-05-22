@@ -60,7 +60,7 @@ class _ResultsRouteState extends State<ResultsRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Resultados"),
+        title: Text("Super Junker Bernird"),
         backgroundColor: Color.fromRGBO(172, 44, 58, 1),
       ),
       body: FutureBuilder<Results>(
@@ -105,7 +105,31 @@ class _ResultsRouteState extends State<ResultsRoute> {
                 separatorBuilder: (context, position) => Divider(),
                 itemCount: snapshot.data.payload.length);
           } else if (snapshot.hasError) {
-            return Center(child: Text("error loading"));
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10, 70, 10, 5),
+                    child: Center(
+                      child: Image.asset(
+                        "images/oops.png",
+                        height: 300,
+                        width: 300,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      "Por favor, complete los campos de búsqueda.",
+                      style: TextStyle(
+                       // fontWeight: FontWeight.bold,
+                        fontSize: 19,
+                      ),
+                    ),
+                  ),
+                ]);
           } else if (snapshot.hasData && snapshot.data.payload.length == 0) {
             return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -123,17 +147,16 @@ class _ResultsRouteState extends State<ResultsRoute> {
                     ),
                   ),
                   Text(
-                    "No se encontraron piezas.",
+                    '''No se encontró la pieza.''',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
-                  
                   Text(
-                    "Para mas información, escríbenos",
+                    '''Por favor envíanos un mensaje para\n poder ayudarte.''',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
@@ -158,14 +181,14 @@ class _ResultsRouteState extends State<ResultsRoute> {
                           onPressed: () {
                             Navigator.of(context).pop();
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) => (ContactWebView())));
+                                builder: (BuildContext context) =>
+                                    (ContactWebView())));
                           },
                         ),
                       ),
                     ),
                   ),
-                ]
-              );
+                ]);
           }
 
           return Center(

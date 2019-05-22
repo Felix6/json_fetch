@@ -8,7 +8,7 @@ class ContactWebView extends StatelessWidget {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text("Junker Bernird"),
+        title: Text("Super Junker Bernird"),
         backgroundColor: Color.fromRGBO(172, 44, 58, 1),
       ),
       body: SafeArea(

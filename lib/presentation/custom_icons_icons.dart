@@ -16,10 +16,6 @@
 ///         Author:    Dave Gandy
 ///         License:   SIL ()
 ///         Homepage:  http://fortawesome.github.com/Font-Awesome/
-/// * Brandico, (C) 2012 by Vitaly Puzrin
-///         Author:    Crowdsourced, for Fontello project
-///         License:   SIL (http://scripts.sil.org/OFL)
-///         Homepage:  
 ///
 import 'package:flutter/widgets.dart';
 
@@ -29,7 +25,7 @@ class CustomIcons {
   static const _kFontFam = 'CustomIcons';
 
   static const IconData facebook = const IconData(0xf09a, fontFamily: _kFontFam);
+  static const IconData youtube_play = const IconData(0xf16a, fontFamily: _kFontFam);
   static const IconData facebook_official = const IconData(0xf230, fontFamily: _kFontFam);
-  static const IconData facebook_rect = const IconData(0xf301, fontFamily: _kFontFam);
   static const IconData facebook_squared = const IconData(0xf308, fontFamily: _kFontFam);
 }

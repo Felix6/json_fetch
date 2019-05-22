@@ -5,7 +5,7 @@ class LegalPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Politicas"),
+        title: Text("Super Junker Bernird"),
         backgroundColor: Color.fromRGBO(172, 44, 58, 1),
       ),
       body: SingleChildScrollView(

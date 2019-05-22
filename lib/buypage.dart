@@ -100,7 +100,7 @@ class _BuyPartsRouteState extends State<BuyPartsRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Comprar Pieza"),
+        title: Text("Super Junker Bernird"),
         backgroundColor: Color.fromRGBO(172, 44, 58, 1),
       ),
       body: SingleChildScrollView(

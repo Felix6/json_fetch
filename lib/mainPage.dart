@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'legalPge.dart';
 import 'package:material_drawer/Results.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:material_drawer/presentation/custom_icons_icons.dart';
 
 class MainPageState extends State<MainPage> {
   var title = ''; // title is mutable property
@@ -20,23 +21,25 @@ class MainPageState extends State<MainPage> {
   int _toYear;
 
   // These are GET requests
-  final String makesUrl = "https://admin.junkerbernird.com/api/vehicles/getmakes";
-  final String partsUrl = "https://admin.junkerbernird.com/api/vehicles/getparts";
+  final String makesUrl =
+      "https://admin.junkerbernird.com/api/vehicles/getmakes";
+  final String partsUrl =
+      "https://admin.junkerbernird.com/api/vehicles/getparts";
 
   // These are POST requests
-  final String modelsUrl = "https://admin.junkerbernird.com/api/vehicles/getmodels/";
+  final String modelsUrl =
+      "https://admin.junkerbernird.com/api/vehicles/getmodels/";
   final String listUrl = "https://admin.junkerbernird.com/api/vehicles/list/";
 
   List makesDataList = List();
   List partDataList = List();
   List modelDataList = List();
-  
-  
+
   Future<String> getModelData() async {
-  //  print("getModelData-----------------------------------------------");
+    //  print("getModelData-----------------------------------------------");
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
-   // var makeId = "1";
+    // var makeId = "1";
     var modelRes =
         await http.post(Uri.encodeFull(modelsUrl + _makesSelection), headers: {
       "content-type": "application/json",
@@ -58,7 +61,7 @@ class MainPageState extends State<MainPage> {
   }
 
   Future<String> getMakeData() async {
-  //  print("getMakeData-----------------------------------------------");
+    //  print("getMakeData-----------------------------------------------");
     var date = new DateFormat.yMMMMd().format(new DateTime.now().toUtc());
     var time = new DateFormat.jm().format(new DateTime.now().toUtc());
     var makeRes = await http.get(Uri.encodeFull(makesUrl), headers: {
@@ -130,9 +133,7 @@ class MainPageState extends State<MainPage> {
                 ),
               ],
             ),
-          )
-        ),
-
+          )),
           Card(
             child: new ListTile(
               leading: new Icon(
@@ -152,7 +153,6 @@ class MainPageState extends State<MainPage> {
               },
             ),
           ),
-
           Card(
             child: new ListTile(
               leading: new Icon(
@@ -173,7 +173,6 @@ class MainPageState extends State<MainPage> {
               ),
             ),
           ),
-
           Card(
             child: new ListTile(
               leading: new Icon(Icons.room, size: 35.0, color: Colors.red),
@@ -186,7 +185,6 @@ class MainPageState extends State<MainPage> {
               },
             ),
           ),
-
           Card(
             child: new ListTile(
               leading:
@@ -202,7 +200,6 @@ class MainPageState extends State<MainPage> {
               ),
             ),
           ),
-
           Card(
             child: ListTile(
               leading: Icon(
@@ -223,7 +220,6 @@ class MainPageState extends State<MainPage> {
               ),
             ),
           ),
-
           Card(
             child: new ListTile(
               leading: new Icon(Icons.filter, size: 35.0, color: Colors.red),
@@ -238,9 +234,70 @@ class MainPageState extends State<MainPage> {
               },
             ),
           ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: IconButton(
+                            icon: Icon(
+                              CustomIcons.facebook_official,
+                              size: 45,
+                              color: Color.fromRGBO(59, 89, 152, 1),
+                            ),
+                            onPressed: () {
+                              _launchFacebook();
+                            },
+                          )),
+                      SizedBox(
+                        width: 35,
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: IconButton(
+                            icon: Icon(
+                              CustomIcons.youtube_play,
+                              size: 50,
+                              color: Color.fromRGBO(204, 24, 30, 1),
+                            ),
+                            onPressed: () {
+                              _launchYoutube();
+                            },
+                          )),
+                    ],
+                  ),
+                ],
+              )
+            ],
+          )
         ],
       ),
     );
+  }
+
+  _launchFacebook() async {
+    const facebookUrl = "https://www.facebook.com/SuperJunkerBernird/";
+    if (await canLaunch(facebookUrl)) {
+      await launch(facebookUrl, forceWebView: true);
+    } else {
+      throw "Could not Call $facebookUrl";
+    }
+  }
+
+  _launchYoutube() async {
+    const videoUrl = "https://www.youtube.com/playlist?list=PLoeD6gJpKNV2poKUnL-wSzNUqyDw3E9AF";
+    if (await canLaunch(videoUrl)) {
+      await launch(videoUrl);
+    } else {
+      throw "Could not launch $videoUrl";
+    }
   }
 
   // this function is responsible for calling the dialer
@@ -253,10 +310,10 @@ class MainPageState extends State<MainPage> {
       throw "Could not Call $url";
     }
   }
-  
+
   _launchMap() async {
     const mapUrl = "https://goo.gl/maps/obHa61Xim8KyjEU18";
-    if (await canLaunch(mapUrl)){
+    if (await canLaunch(mapUrl)) {
       await launch(mapUrl);
     } else {
       throw "Could not Call $mapUrl";
@@ -268,201 +325,224 @@ class MainPageState extends State<MainPage> {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(
-          "Junker Bernird",
+          "Super Junker Bernird",
         ),
         backgroundColor: new Color.fromRGBO(172, 44, 58, 1), //#aa2c3a
       ),
       drawer: _buildDrawer(context),
       body: SingleChildScrollView(
         child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-       
-        children: <Widget>[
-        Container(
-          child: CarouselSlider(
-            height: 193.0,
-              enableInfiniteScroll: true,
-              autoPlay: true,
-              items: <Widget>[
-                Image.network("http://www.bmstudiopr.com/jbapp/promo/promo1.png"),
-                Image.network("http://www.bmstudiopr.com/jbapp/promo/promo2.png"),
-                Image.network("http://www.bmstudiopr.com/jbapp/promo/promo3.png")
-                ],
-              ),
-            ),
-
-            /// MAKES DROPDOWN BUTTON
-            Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-              child: DropdownButtonFormField(
-                decoration: InputDecoration(
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.grey[250],
-                  labelText: "Marca del auto",
-                  labelStyle: TextStyle(
-                      fontSize: 20.0, color: Color.fromRGBO(172, 44, 58, 1)),
-                  border: OutlineInputBorder(),
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                child: CarouselSlider(
+                  height: 193.0,
+                  enableInfiniteScroll: true,
+                  autoPlay: true,
+                  items: <Widget>[
+                    Image.asset("images/about_header2.png"),
+                    Image.network(
+                        "http://www.bmstudiopr.com/jbapp/promo/promo2.png"),
+                    Image.network(
+                        "http://www.bmstudiopr.com/jbapp/promo/promo3.png")
+                  ],
                 ),
-                items: makesDataList.map((item) {
-                  return new DropdownMenuItem(
-                    child: new Text(item['value']),
-                    value: item['id'].toString(),
-                  );
-                }).toList(),
-                onChanged: (newVal) {
-                  setState(() {
-                    _makesSelection = newVal;
-                  });
-                  this.getModelData();
-                },
-                value: _makesSelection,
               ),
-            ),
 
-            /// MODELS DROPDROP DOWN BUTTON
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-              child: DropdownButtonFormField(
-                decoration: InputDecoration(
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.grey[250],
-                  labelText: "Modelo del Auto",
-                  alignLabelWithHint: true,
-                  labelStyle: TextStyle(
-                      fontSize: 20.0, color: Color.fromRGBO(172, 44, 58, 1)),
-                  border: OutlineInputBorder(),
+              /// MAKES DROPDOWN BUTTON
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                child: DropdownButtonFormField(
+                  decoration: InputDecoration(
+                    isDense: true,
+                    filled: true,
+                    fillColor: Colors.grey[250],
+                    labelText: "Marca del Auto",
+                    labelStyle: TextStyle(
+                        fontSize: 20.0, color: Color.fromRGBO(172, 44, 58, 1)),
+                    border: OutlineInputBorder(),
+                  ),
+                  items: makesDataList.map((item) {
+                    return new DropdownMenuItem(
+                      child: new Text(item['value']),
+                      value: item['id'].toString(),
+                    );
+                  }).toList(),
+                  onChanged: (newVal) {
+                    setState(() {
+                      _makesSelection = newVal;
+                    });
+                    this.getModelData();
+                  },
+                  value: _makesSelection,
                 ),
-                items: modelDataList.map((item) {
-                  return new DropdownMenuItem(
-                    child: new Text(item['value']),
-                    value: item['id'].toString(),
-                  );
-                }).toList(),
-                onChanged: (newVal) {
-                  setState(() {
-                    _modelSelection = newVal;
-                  });
-                },
-                value: _modelSelection,
               ),
-            ),
 
-            /// FROM YEAR TEXT FIELD
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-              child: TextField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  alignLabelWithHint: true,
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.grey[250],
-                  labelText: "Desde Año",
-                  hintText: "Ej: 2005",
-                  labelStyle: TextStyle(
-                      color: Color.fromRGBO(172, 44, 58, 1), fontSize: 20.0),
-                  border: OutlineInputBorder(),
+              /// MODELS DROPDROP DOWN BUTTON
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                child: DropdownButtonFormField(
+                  decoration: InputDecoration(
+                    isDense: true,
+                    filled: true,
+                    fillColor: Colors.grey[250],
+                    labelText: "Modelo del Auto",
+                    alignLabelWithHint: true,
+                    labelStyle: TextStyle(
+                        fontSize: 20.0, color: Color.fromRGBO(172, 44, 58, 1)),
+                    border: OutlineInputBorder(),
+                  ),
+                  items: modelDataList.map((item) {
+                    return new DropdownMenuItem(
+                      child: new Text(item['value']),
+                      value: item['id'].toString(),
+                    );
+                  }).toList(),
+                  onChanged: (newVal) {
+                    setState(() {
+                      _modelSelection = newVal;
+                    });
+                  },
+                  value: _modelSelection,
                 ),
-                onChanged: (newVal) {
-                  if(newVal.length > 1) {
-                    _fromYear = int.parse(newVal);
-                  }
-                },
               ),
-            ),
 
-            /// TO YEAR TEXT FIELD
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-              child: TextField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
+              /// FROM YEAR TEXT FIELD
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
                     alignLabelWithHint: true,
                     isDense: true,
                     filled: true,
                     fillColor: Colors.grey[250],
-                    labelText: "Hasta Año",
-                    hintText: "Ej: 2019",
+                    labelText: "Desde Año",
+                    hintText: "Ej: 2005",
                     labelStyle: TextStyle(
                         color: Color.fromRGBO(172, 44, 58, 1), fontSize: 20.0),
-                    border: OutlineInputBorder()
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (newVal) {
+                    if (newVal.length > 1) {
+                      _fromYear = int.parse(newVal);
+                    }
+                  },
                 ),
-                onChanged: (newVal) {
-                  if(newVal.length > 1) {
-                    _toYear = int.parse(newVal);
-                  }
-                },
               ),
-            ),
-            
-            /// PARTS DROPDOWN BUTTON
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-              child: DropdownButtonFormField(
-                decoration: InputDecoration(
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.grey[250],
-                  labelText: "Pieza del Auto",
-                  labelStyle: TextStyle(
-                      fontSize: 20.0, color: Color.fromRGBO(172, 44, 58, 1)),
-                  border: OutlineInputBorder(),
+
+              /// TO YEAR TEXT FIELD
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                      alignLabelWithHint: true,
+                      isDense: true,
+                      filled: true,
+                      fillColor: Colors.grey[250],
+                      labelText: "Hasta Año",
+                      hintText: "Ej: 2019",
+                      labelStyle: TextStyle(
+                          color: Color.fromRGBO(172, 44, 58, 1),
+                          fontSize: 20.0),
+                      border: OutlineInputBorder()),
+                  onChanged: (newVal) {
+                    if (newVal.length > 1) {
+                      _toYear = int.parse(newVal);
+                    }
+                  },
                 ),
-                items: partDataList.map((item) {
-                  return new DropdownMenuItem(
-                    child: new Text(item['value']),
-                    value: item['id'].toString(),
-                  );
-                }).toList(),
-                onChanged: (newVal) {
-                  setState(() {
-                    _partsSelection = newVal;
-                  });
-                },
-                value: _partsSelection,
               ),
-            ),
-            
-            /// BUTTON
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: ButtonTheme(
-                  minWidth: 200.0,
-                  height: 75.0,
-                  buttonColor: Color.fromRGBO(172, 44, 58, 1),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)),
-                    child: Text(
-                      "Buscar",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
+
+              /// PARTS DROPDOWN BUTTON
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                child: DropdownButtonFormField(
+                  decoration: InputDecoration(
+                    isDense: true,
+                    filled: true,
+                    fillColor: Colors.grey[250],
+                    labelText: "Pieza del Auto",
+                    labelStyle: TextStyle(
+                        fontSize: 20.0, color: Color.fromRGBO(172, 44, 58, 1)),
+                    border: OutlineInputBorder(),
+                  ),
+                  items: partDataList.map((item) {
+                    return new DropdownMenuItem(
+                      child: new Text(item['value']),
+                      value: item['id'].toString(),
+                    );
+                  }).toList(),
+                  onChanged: (newVal) {
+                    setState(() {
+                      _partsSelection = newVal;
+                    });
+                  },
+                  value: _partsSelection,
+                ),
+              ),
+
+              /// BUTTON
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ButtonTheme(
+                    minWidth: 200.0,
+                    height: 75.0,
+                    buttonColor: Color.fromRGBO(172, 44, 58, 1),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0)),
+                      child: Text(
+                        "Buscar",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                        ),
                       ),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => ResultsRoute(
+                                _makesSelection,
+                                _modelSelection,
+                                _fromYear,
+                                _toYear,
+                                _partsSelection)));
+                      },
                     ),
-                    onPressed: () {
-                     Navigator.of(context).push(MaterialPageRoute(
-                       builder: (BuildContext context) => ResultsRoute(
-                         _makesSelection,
-                         _modelSelection,
-                         _fromYear,
-                         _toYear,
-                         _partsSelection
-                       )
-                     ));
-                    },
                   ),
                 ),
               ),
-            ),
-          ]
-        ),
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 10,
+                  child: Image.network(
+                      "http://www.bmstudiopr.com/jbapp/bottompromo/bigpromo.png"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 10,
+                  child: Image.network(
+                      "http://www.bmstudiopr.com/jbapp/bottompromo/mediumpromo.png"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 10,
+                  child: Image.network(
+                      "http://www.bmstudiopr.com/jbapp/bottompromo/smallpromo.png"),
+                ),
+              )
+            ]),
       ),
     );
   }
